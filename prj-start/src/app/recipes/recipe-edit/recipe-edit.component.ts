@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+
 import { RecipeService } from '../recipe.service';
 
 @Component({
@@ -23,11 +24,11 @@ export class RecipeEditComponent implements OnInit {
     this.route.params
       .subscribe(
         (params: Params) => {
-          this.id = +params['id']
-          this.editMode = params['id'] !== null;
+          this.id = +params['id'];
+          this.editMode = params['id'] != null;
           this.initForm();
         }
-      )
+      );
   }
 
   onSubmit() {
@@ -46,7 +47,7 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['../'], {relativeTo: this.route})
+    this.router.navigate(['../'], {relativeTo: this.route});
   }
 
   onAddIngredient() {
@@ -58,12 +59,12 @@ export class RecipeEditComponent implements OnInit {
           Validators.pattern(/^[1-9]+[0-9]*$/)
         ])
       })
-    )
+    );
   }
 
   onDeleteIngredient(index: number) {
     (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
-  } 
+  }
 
   get controls() { // a getter!
     return (<FormArray>this.recipeForm.get('ingredients')).controls;
@@ -76,9 +77,7 @@ export class RecipeEditComponent implements OnInit {
     let recipeIngredients = new FormArray([]);
 
     if(this.editMode) {
-      console.log("RECIPE id: ", this.id)
       const recipe = this.recipeService.getRecipe(this.id);
-      console.log("RECIPE: ", recipe)
       recipeName = recipe.name;
       recipeImagePath = recipe.imagePath;
       recipeDescription = recipe.description;
@@ -101,7 +100,7 @@ export class RecipeEditComponent implements OnInit {
       'name': new FormControl(recipeName, Validators.required),
       'imagePath': new FormControl(recipeImagePath, Validators.required),
       'description': new FormControl(recipeDescription, Validators.required),
-      'ingredients': recipeIngredients, 
+      'ingredients': recipeIngredients
     });
   }
 
